@@ -8,8 +8,10 @@ InspoGrid AI turns scattered saved inspiration (Pinterest, Etsy, manual uploads)
 
 | Topic | File |
 |-------|------|
+| **Tracked implementation plan** | [domains/tech-scope.md](./domains/tech-scope.md) |
 | Architecture & stack | [architecture.md](./architecture.md) |
 | MVP scope & phases | [domains/mvp.md](./domains/mvp.md) |
+| Session changelog | [CHANGELOG.md](./CHANGELOG.md) |
 
 ## Repo layout
 

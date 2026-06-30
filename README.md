@@ -42,6 +42,10 @@ Open http://localhost:3000 → **Start a mood board** → upload images → expo
 - [x] Chrome extension scaffold + import API endpoint
 - [x] Supabase schema migration
 
+## Implementation plan
+
+Tracked phases, checklists, and exit criteria: [docs/APP_KNOWLEDGE/domains/tech-scope.md](docs/APP_KNOWLEDGE/domains/tech-scope.md)
+
 ## Next (V1)
 
 - Wire Supabase persistence (replace localStorage)
