@@ -21,7 +21,7 @@
 | Phase | Target | Status | Exit criteria |
 |-------|--------|--------|---------------|
 | **Scaffold** | Pre-week 1 | `[x]` Done | UI prototype runs in demo mode |
-| **Phase 0** | Weeks 1–2 | `[ ]` Not started | Auth + Supabase persistence E2E |
+| **Phase 0** | Weeks 1–2 | `[~]` In progress | Auth + Supabase persistence E2E |
 | **Phase 1** | Weeks 3–6 | `[ ]` Not started | UC-01 + UC-09 beta-ready |
 | **Phase 2** | Weeks 7–10 | `[ ]` Not started | Stripe + 300 DPI PDF + AI filter |
 | **Phase 3** | Months 4–6 | `[-]` Deferred | V2 growth features |
@@ -68,53 +68,54 @@
 **Blockers:** Supabase project credentials
 
 ### 0.1 Supabase setup
-- [ ] Create Supabase project (prod + staging)
-- [ ] Run `001_initial_schema.sql` in SQL editor
-- [ ] Create `project-images` storage bucket (private)
-- [ ] Add storage RLS policies (user-scoped paths: `{user_id}/{project_id}/`)
-- [ ] Copy `web/.env.local.example` → `web/.env.local` with real keys
-- [ ] Verify auth email templates + redirect URLs
+- [ ] Create Supabase project (prod + staging) — **manual step**
+- [ ] Run `001_initial_schema.sql` in SQL editor — **manual step**
+- [x] Storage bucket + RLS in `003_storage_policies.sql`
+- [x] Setup guide: `supabase/README.md`
+- [ ] Copy `web/.env.local.example` → `web/.env.local` with real keys — **manual step**
+- [ ] Verify auth email templates + redirect URLs — **manual step**
 
 ### 0.2 Schema hardening (migration `002`)
-- [ ] Add `image_assets.content_hash` for deduplication
-- [ ] Add `image_assets.thumb_path` + `full_path` columns
-- [ ] Add `source_connections.refresh_token`, `expires_at`
-- [ ] Add `usage_counters` table (user_id, month, imports, exports, ai_calls)
-- [ ] Document token encryption approach (Supabase Vault or app-level)
+- [x] Add `image_assets.content_hash` for deduplication
+- [x] Add `image_assets.thumb_path` + `full_path` columns
+- [x] Add `source_connections.refresh_token`, `expires_at`
+- [x] Add `usage_counters` table (user_id, month, imports, exports, ai_calls)
+- [x] Document token encryption approach (Supabase Vault or app-level)
 
 ### 0.3 Data layer refactor
-- [ ] Create `web/lib/data/projects.ts` — Supabase CRUD
-- [ ] Create `web/lib/data/images.ts` — Supabase CRUD + storage upload
-- [ ] Create `web/lib/data/usage.ts` — tier limit checks
-- [ ] Abstract store interface so demo mode remains for local dev (optional flag)
-- [ ] Migrate dashboard to data layer
-- [ ] Migrate project editor to data layer
-- [ ] Remove direct `local-store` imports from pages
+- [x] Create `web/lib/data/projects.ts` — Supabase CRUD
+- [x] Create `web/lib/data/images.ts` — Supabase CRUD + storage upload
+- [x] Create `web/lib/data/usage.ts` — tier limit checks
+- [x] Abstract store interface (`resolveDataMode`) — demo fallback when no session
+- [x] Migrate dashboard to data layer
+- [x] Migrate project editor to data layer
+- [x] Remove direct `local-store` imports from pages
 
 ### 0.4 Image upload pipeline
-- [ ] Upload files to Supabase Storage on manual import
-- [ ] Generate signed URLs for grid preview thumbnails
-- [ ] Store metadata in `image_assets` (title, sort_order, platform=manual)
-- [ ] Handle upload errors + size limits (e.g. 10 MB/image, 50 images/project free)
-- [ ] Revoke blob URLs; use storage URLs only
+- [x] Upload files to Supabase Storage on manual import
+- [x] Generate signed URLs for grid preview thumbnails
+- [x] Store metadata in `image_assets` (title, sort_order, platform=manual)
+- [x] Handle upload errors + size limits (10 MB/image, 50 images/project free)
+- [x] Supabase path uses storage URLs (local demo still uses blob URLs)
 
 ### 0.5 Auth & route protection
-- [ ] Wire login/signup to Supabase Auth (email/password)
-- [ ] Auth callback route tested (`/auth/callback`)
-- [ ] Middleware: redirect unauthenticated users from `/dashboard`, `/projects/*`
-- [ ] Session persistence across refresh
-- [ ] Sign out flow
-- [ ] Profile row created on signup (verify trigger)
+- [x] Wire login/signup to Supabase Auth (email/password)
+- [x] Auth callback route (`/auth/callback`)
+- [x] Middleware: redirect unauthenticated users from `/dashboard`, `/projects/*`
+- [x] Session persistence across refresh
+- [x] Sign out flow (navbar)
+- [ ] Profile row created on signup — verify after Supabase connected
 
 ### 0.6 CI & first green test
-- [ ] Add Playwright to `web/package.json` devDependencies
-- [ ] Rewrite UC-09 E2E to match current UI selectors
-- [ ] Add GitHub Actions: lint + typecheck + UC-09 on PR
+- [x] Add Playwright (`package.json` root + `web/`)
+- [x] UC-09 E2E aligned to current UI (`tests/uc-09-manual-upload.spec.ts`)
+- [x] GitHub Actions: lint + build + UC-09 (`.github/workflows/ci.yml`)
 - [ ] Deploy staging to Vercel (preview + staging branch)
 
 ### Phase 0 exit criteria
-- [ ] New user signs up → creates project → uploads images → refreshes → data persists
-- [ ] UC-09 Playwright test passes in CI
+- [ ] New user signs up → creates project → uploads images → refreshes → data persists (needs Supabase)
+- [x] UC-09 Playwright test passes locally
+- [ ] UC-09 passes in GitHub Actions CI
 - [ ] Staging URL live for extension testing
 
 ---
@@ -320,6 +321,7 @@ Record completed items here (newest first).
 
 | Date | Item | PR / commit |
 |------|------|-------------|
+| 2026-06-29 | Phase 0 foundation: data layer, auth, migrations 002/003, CI, UC-09 | — |
 | 2026-06-29 | MVP scaffold (web, extension, schema, docs) | `98f5338` |
 | 2026-06-29 | Git repo created + pushed to GitHub | `itsbrown/inspogrid-ai` |
 | 2026-06-29 | Tracked implementation plan (this doc) | — |

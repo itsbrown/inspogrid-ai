@@ -1,0 +1,14 @@
+{
+  "name": "inspogrid-ai",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix web",
+    "build": "npm run build --prefix web",
+    "lint": "npm run lint --prefix web",
+    "test:e2e": "playwright test",
+    "test:e2e:uc09": "playwright test tests/uc-09-manual-upload.spec.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0"
+  }
+}

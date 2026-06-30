@@ -7,15 +7,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { ImageUploadZone } from "@/components/editor/image-upload-zone";
 import { GridEditor } from "@/components/editor/grid-editor";
 import { ExportPanel } from "@/components/editor/export-panel";
+import { getProject, listImages, reorderImages, removeImage, updateProject, uploadImages } from "@/lib/data";
 import type { GridSettings, ImageAsset, Project } from "@/lib/types/database";
-import {
-  addLocalImages,
-  getLocalImages,
-  getLocalProject,
-  removeLocalImage,
-  updateLocalImageOrder,
-  updateLocalProject,
-} from "@/lib/store/local-store";
 import { ArrowLeft } from "lucide-react";
 
 export default function ProjectEditorPage() {
@@ -23,34 +16,61 @@ export default function ProjectEditorPage() {
   const projectId = params.id as string;
   const [project, setProject] = useState<Project | null>(null);
   const [images, setImages] = useState<ImageAsset[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
 
-  const refresh = useCallback(() => {
-    setProject(getLocalProject(projectId) ?? null);
-    setImages(getLocalImages(projectId));
+  const refresh = useCallback(async () => {
+    setError("");
+    try {
+      const [p, imgs] = await Promise.all([getProject(projectId), listImages(projectId)]);
+      setProject(p);
+      setImages(imgs);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to load project");
+    } finally {
+      setLoading(false);
+    }
   }, [projectId]);
 
   useEffect(() => {
     refresh();
   }, [refresh]);
 
-  function handleUpload(files: File[]) {
-    addLocalImages(projectId, files);
-    refresh();
+  async function handleUpload(files: File[]) {
+    setUploading(true);
+    setError("");
+    try {
+      await uploadImages(projectId, files);
+      await refresh();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
   }
 
-  function handleReorder(orderedIds: string[]) {
-    updateLocalImageOrder(projectId, orderedIds);
-    refresh();
+  async function handleReorder(orderedIds: string[]) {
+    await reorderImages(projectId, orderedIds);
+    await refresh();
   }
 
-  function handleRemove(id: string) {
-    removeLocalImage(id);
-    refresh();
+  async function handleRemove(id: string) {
+    await removeImage(id);
+    await refresh();
   }
 
-  function handleGridChange(settings: GridSettings) {
-    updateLocalProject(projectId, { grid_settings: settings });
-    refresh();
+  async function handleGridChange(settings: GridSettings) {
+    await updateProject(projectId, { grid_settings: settings });
+    await refresh();
+  }
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-stone-50">
+        <p className="text-stone-500">Loading project…</p>
+      </div>
+    );
   }
 
   if (!project) {
@@ -85,14 +105,19 @@ export default function ProjectEditorPage() {
           )}
         </div>
 
+        {error && (
+          <p className="mb-4 rounded-lg bg-rose-50 px-4 py-2 text-sm text-rose-700">{error}</p>
+        )}
+
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="space-y-6 lg:col-span-2">
             <section className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
               <h2 className="mb-3 font-semibold text-stone-900">Manual upload</h2>
               <p className="mb-4 text-sm text-stone-500">
-                UC-09 fallback — drag images from your desktop. Pinterest extension import coming next.
+                UC-09 — drag images from your desktop. Pinterest extension import coming in Phase 1.
               </p>
-              <ImageUploadZone onFilesSelected={handleUpload} />
+              <ImageUploadZone onFilesSelected={handleUpload} disabled={uploading} />
+              {uploading && <p className="mt-3 text-sm text-stone-500">Uploading…</p>}
               {images.length > 0 && (
                 <p className="mt-3 text-sm text-green-700" data-testid="import-count">
                   {images.length} image{images.length !== 1 ? "s" : ""} in library

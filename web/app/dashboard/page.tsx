@@ -1,20 +1,43 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/projects/project-card";
+import { countImages, listProjects } from "@/lib/data";
 import type { Project } from "@/lib/types/database";
-import { getLocalImages, getLocalProjects } from "@/lib/store/local-store";
 import { Plus } from "lucide-react";
 
 export default function DashboardPage() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [imageCounts, setImageCounts] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const list = await listProjects();
+      setProjects(list);
+      const counts: Record<string, number> = {};
+      await Promise.all(
+        list.map(async (p) => {
+          counts[p.id] = await countImages(p.id);
+        })
+      );
+      setImageCounts(counts);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to load projects");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    setProjects(getLocalProjects());
-  }, []);
+    load();
+  }, [load]);
 
   return (
     <div className="min-h-screen bg-stone-50">
@@ -33,7 +56,13 @@ export default function DashboardPage() {
           </Link>
         </div>
 
-        {projects.length === 0 ? (
+        {error && (
+          <p className="mb-4 rounded-lg bg-rose-50 px-4 py-2 text-sm text-rose-700">{error}</p>
+        )}
+
+        {loading ? (
+          <p className="text-stone-500">Loading projects…</p>
+        ) : projects.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-stone-300 bg-white px-6 py-16 text-center">
             <p className="text-stone-600">No projects yet. Start with a manual upload mood board.</p>
             <Link href="/projects/new" className="mt-4 inline-block">
@@ -46,7 +75,7 @@ export default function DashboardPage() {
               <ProjectCard
                 key={project.id}
                 project={project}
-                imageCount={getLocalImages(project.id).length}
+                imageCount={imageCounts[project.id] ?? 0}
               />
             ))}
           </div>

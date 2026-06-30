@@ -17,10 +17,22 @@ Unified multi-source inspiration aggregator with print-ready contact-sheet mood 
 Works immediately without Supabase — uses browser localStorage.
 
 ```bash
-cd web
-npm install
-npm run dev
+cd web && npm install && npm run dev
+# or from repo root:
+npm install && npm run dev
 ```
+
+### E2E tests
+
+```bash
+npm install
+npx playwright install chromium
+npm run test:e2e:uc09
+```
+
+### Supabase (production path)
+
+See [supabase/README.md](supabase/README.md) — run migrations 001–003, then configure `web/.env.local`.
 
 Open http://localhost:3000 → **Start a mood board** → upload images → export PDF.
 
