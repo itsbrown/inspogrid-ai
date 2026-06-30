@@ -42,8 +42,10 @@ export default function SignupPage() {
         <p className="mt-1 text-sm text-stone-500">Start building print-ready mood boards</p>
         <form onSubmit={handleSignup} className="mt-6 space-y-4">
           <div>
-            <label className="text-sm font-medium text-stone-700">Email</label>
+            <label htmlFor="signup-email" className="text-sm font-medium text-stone-700">Email</label>
             <input
+              id="signup-email"
+              data-testid="signup-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -52,8 +54,10 @@ export default function SignupPage() {
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-stone-700">Password</label>
+            <label htmlFor="signup-password" className="text-sm font-medium text-stone-700">Password</label>
             <input
+              id="signup-password"
+              data-testid="signup-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
