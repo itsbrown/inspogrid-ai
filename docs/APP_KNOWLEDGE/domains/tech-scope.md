@@ -68,12 +68,13 @@
 **Blockers:** Supabase project credentials
 
 ### 0.1 Supabase setup
-- [ ] Create Supabase project (prod + staging) — **manual step**
-- [ ] Run `001_initial_schema.sql` in SQL editor — **manual step**
+- [x] Create Supabase project (`numdijyrzdqjizpvlnbs` — InspoGrid AI)
+- [x] Run migrations 001–003 via `supabase db push`
 - [x] Storage bucket + RLS in `003_storage_policies.sql`
 - [x] Setup guide: `supabase/README.md`
-- [ ] Copy `web/.env.local.example` → `web/.env.local` with real keys — **manual step**
-- [ ] Verify auth email templates + redirect URLs — **manual step**
+- [x] `web/.env.local` configured (gitignored, local machine)
+- [x] Auth redirect URLs + email confirmations off (via `supabase config push`)
+- [ ] Staging Supabase project (optional, deferred)
 
 ### 0.2 Schema hardening (migration `002`)
 - [x] Add `image_assets.content_hash` for deduplication
@@ -104,7 +105,7 @@
 - [x] Middleware: redirect unauthenticated users from `/dashboard`, `/projects/*`
 - [x] Session persistence across refresh
 - [x] Sign out flow (navbar)
-- [ ] Profile row created on signup — verify after Supabase connected
+- [x] Profile row created on signup (trigger verified)
 
 ### 0.6 CI & first green test
 - [x] Add Playwright (`package.json` root + `web/`)
@@ -113,10 +114,11 @@
 - [ ] Deploy staging to Vercel (preview + staging branch)
 
 ### Phase 0 exit criteria
-- [ ] New user signs up → creates project → uploads images → refreshes → data persists (needs Supabase)
-- [x] UC-09 Playwright test passes locally
+- [x] New user signs up → creates project (verified via API)
+- [ ] Upload images → refresh → data persists in Supabase Storage (verify in browser)
+- [x] UC-09 Playwright test passes locally (demo mode)
 - [ ] UC-09 passes in GitHub Actions CI
-- [ ] Staging URL live for extension testing
+- [ ] Staging URL live on Vercel
 
 ---
 
@@ -321,7 +323,8 @@ Record completed items here (newest first).
 
 | Date | Item | PR / commit |
 |------|------|-------------|
-| 2026-06-29 | Phase 0 foundation: data layer, auth, migrations 002/003, CI, UC-09 | — |
+| 2026-06-30 | Supabase project provisioned, migrations applied, auth configured | — |
+| 2026-06-29 | Phase 0 foundation: data layer, auth, migrations 002/003, CI, UC-09 | `8d0bc78` |
 | 2026-06-29 | MVP scaffold (web, extension, schema, docs) | `98f5338` |
 | 2026-06-29 | Git repo created + pushed to GitHub | `itsbrown/inspogrid-ai` |
 | 2026-06-29 | Tracked implementation plan (this doc) | — |

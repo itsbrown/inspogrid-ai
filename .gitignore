@@ -11,6 +11,7 @@ web/build/
 .env
 .env*.local
 web/.env.local
+supabase/.db-password.local
 
 # OS & IDE
 .DS_Store

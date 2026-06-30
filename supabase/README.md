@@ -1,6 +1,19 @@
 # Supabase setup (Phase 0)
 
-## 1. Create project
+## Project (provisioned)
+
+| Field | Value |
+|-------|-------|
+| Name | InspoGrid AI |
+| Ref | `numdijyrzdqjizpvlnbs` |
+| URL | https://numdijyrzdqjizpvlnbs.supabase.co |
+| Dashboard | https://supabase.com/dashboard/project/numdijyrzdqjizpvlnbs |
+| Region | us-east-1 |
+| Migrations | 001–003 applied via `supabase db push` |
+
+DB password (local only): `supabase/.db-password.local` (gitignored)
+
+## 1. Create project (already done)
 
 1. Go to [supabase.com](https://supabase.com) → New project
 2. Note **Project URL** and **anon public key**

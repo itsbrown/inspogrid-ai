@@ -4,6 +4,23 @@ Session-level log of durable learnings and doc changes. Not a product release ch
 
 ---
 
+## 2026-06-30 (Supabase provisioned)
+
+**Learned:**
+- Supabase project `numdijyrzdqjizpvlnbs` created via CLI; migrations 001–003 pushed
+- Auth: email confirmations disabled for dev; redirect URLs include `/auth/callback`
+- Profile trigger works on signup; project RLS insert verified programmatically
+- `web/.env.local` is gitignored and configured locally only
+
+**Updated:**
+- `supabase/config.toml`, `supabase/README.md`, `docs/APP_KNOWLEDGE/domains/tech-scope.md`
+
+**Gaps:**
+- Browser E2E with Supabase session not yet automated
+- Vercel staging deploy still pending
+
+---
+
 ## 2026-06-29 (Phase 0)
 
 **Learned:**
