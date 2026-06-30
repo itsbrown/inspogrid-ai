@@ -94,18 +94,35 @@ export async function listImages(projectId: string): Promise<ImageAsset[]> {
   return images;
 }
 
+const UNSUPPORTED_EXPORT_TYPES = new Set([
+  "image/heic",
+  "image/heif",
+  "image/avif",
+  "image/tiff",
+]);
+
+function isSupportedUpload(file: File): boolean {
+  if (!file.type.startsWith("image/")) return false;
+  if (file.size > MAX_FILE_SIZE_BYTES) return false;
+  const ext = file.name.split(".").pop()?.toLowerCase();
+  if (ext && ["heic", "heif", "avif", "tiff", "tif"].includes(ext)) return false;
+  if (UNSUPPORTED_EXPORT_TYPES.has(file.type)) return false;
+  return true;
+}
+
 export async function uploadImages(
   projectId: string,
   files: File[]
 ): Promise<ImageAsset[]> {
-  const validFiles = files.filter((f) => {
-    if (!f.type.startsWith("image/")) return false;
-    if (f.size > MAX_FILE_SIZE_BYTES) return false;
-    return true;
-  });
+  const validFiles = files.filter(isSupportedUpload);
+  const skipped = files.length - validFiles.length;
 
   if (validFiles.length === 0) {
-    throw new Error("No valid image files (max 10 MB each, JPG/PNG/WebP/GIF).");
+    throw new Error(
+      skipped > 0
+        ? "HEIC/HEIF/AVIF/TIFF not supported for PDF export. Please upload JPG or PNG."
+        : "No valid image files (max 10 MB each, JPG/PNG/WebP/GIF)."
+    );
   }
 
   if ((await resolveDataMode()) === "local") {

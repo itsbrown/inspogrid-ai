@@ -42,7 +42,7 @@ export function ImageUploadZone({ onFilesSelected, disabled }: ImageUploadZonePr
     >
       <Upload className="mb-3 h-8 w-8 text-stone-400" />
       <p className="font-medium text-stone-700">Drag & drop images here</p>
-      <p className="mt-1 text-sm text-stone-500">or click to browse (JPG, PNG, WebP)</p>
+      <p className="mt-1 text-sm text-stone-500">JPG, PNG, WebP, GIF · HEIC not supported for PDF export</p>
       <input
         type="file"
         accept="image/*"

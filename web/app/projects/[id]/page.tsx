@@ -137,6 +137,7 @@ export default function ProjectEditorPage() {
 
           <div>
             <ExportPanel
+              projectId={projectId}
               projectName={project.name}
               images={images}
               gridSettings={project.grid_settings}

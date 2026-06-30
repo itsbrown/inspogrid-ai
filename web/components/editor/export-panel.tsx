@@ -4,10 +4,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { GridSettings, ImageAsset } from "@/lib/types/database";
 import { GRID_PRESETS, applyPreset } from "@/lib/grid-presets";
+import { listImages } from "@/lib/data/images";
 import { downloadPDF, exportContactSheetPDF } from "@/lib/pdf/export-contact-sheet";
+import { gridCapacity } from "@/lib/grid-presets";
 import { Download, FileImage } from "lucide-react";
 
 interface ExportPanelProps {
+  projectId: string;
   projectName: string;
   images: ImageAsset[];
   gridSettings: GridSettings;
@@ -16,6 +19,7 @@ interface ExportPanelProps {
 }
 
 export function ExportPanel({
+  projectId,
   projectName,
   images,
   gridSettings,
@@ -23,13 +27,17 @@ export function ExportPanel({
   watermark = true,
 }: ExportPanelProps) {
   const [exporting, setExporting] = useState(false);
+  const selectedCount = images.filter((i) => i.selected).length;
+  const pages = Math.ceil(selectedCount / gridCapacity(gridSettings)) || 1;
 
   async function handleExport() {
     setExporting(true);
     try {
+      // Refresh signed URLs before export (avoids expired Supabase links)
+      const freshImages = await listImages(projectId);
       const pdf = await exportContactSheetPDF({
         projectName,
-        images,
+        images: freshImages,
         gridSettings,
         watermark,
       });
@@ -84,9 +92,13 @@ export function ExportPanel({
         </label>
       </div>
 
+      <p className="mb-4 text-xs text-stone-500">
+        {selectedCount} image{selectedCount !== 1 ? "s" : ""} → {pages} page{pages !== 1 ? "s" : ""}
+      </p>
+
       {watermark && (
         <p className="mb-4 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">
-          Free plan exports include a watermark. Upgrade to Pro for clean 300 DPI PDFs.
+          Free plan exports include a small footer watermark. Use JPG/PNG for best results (HEIC not supported).
         </p>
       )}
 
@@ -97,7 +109,7 @@ export function ExportPanel({
         data-testid="generate-pdf-btn"
       >
         <Download className="h-4 w-4" />
-        {exporting ? "Generating PDF…" : "Generate PDF"}
+        {exporting ? "Generating PDF…" : `Generate PDF (${pages} page${pages !== 1 ? "s" : ""})`}
       </Button>
     </div>
   );
