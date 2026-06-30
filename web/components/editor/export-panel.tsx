@@ -42,7 +42,7 @@ export function ExportPanel({
         watermark,
       });
       const slug = projectName.toLowerCase().replace(/\s+/g, "-");
-      downloadPDF(pdf, `${slug}-moodboard.pdf`);
+      downloadPDF(pdf, `${slug}-contact-sheet.pdf`);
     } finally {
       setExporting(false);
     }

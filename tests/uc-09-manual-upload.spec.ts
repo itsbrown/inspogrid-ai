@@ -27,7 +27,7 @@ test.describe("UC-09: Manual upload workflow", () => {
     await page.getByTestId("generate-pdf-btn").click();
     const download = await downloadPromise;
 
-    expect(download.suggestedFilename()).toContain("e2e-test-mood-board");
+    expect(download.suggestedFilename()).toContain("contact-sheet");
     expect(download.suggestedFilename()).toContain(".pdf");
   });
 });
