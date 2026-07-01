@@ -21,7 +21,7 @@
 | Phase | Target | Status | Exit criteria |
 |-------|--------|--------|---------------|
 | **Scaffold** | Pre-week 1 | `[x]` Done | UI prototype runs in demo mode |
-| **Phase 0** | Weeks 1–2 | `[~]` In progress | Auth + Supabase persistence E2E |
+| **Phase 0** | Weeks 1–2 | `[x]` Done | Auth + Supabase persistence E2E |
 | **Phase 1** | Weeks 3–6 | `[ ]` Not started | UC-01 + UC-09 beta-ready |
 | **Phase 2** | Weeks 7–10 | `[ ]` Not started | Stripe + 300 DPI PDF + AI filter |
 | **Phase 3** | Months 4–6 | `[-]` Deferred | V2 growth features |
@@ -39,7 +39,7 @@
 - [x] Manual upload zone (UC-09)
 - [x] Grid editor with drag-reorder (@dnd-kit)
 - [x] Grid presets: 4×6, 5×5, 8×10
-- [x] Client-side jsPDF export (watermarked)
+- [x] React-PDF contact sheet export (watermarked)
 - [x] Demo mode via `localStorage` (`web/lib/store/local-store.ts`)
 
 ### Backend & infra
@@ -111,14 +111,15 @@
 - [x] Add Playwright (`package.json` root + `web/`)
 - [x] UC-09 E2E aligned to current UI (`tests/uc-09-manual-upload.spec.ts`)
 - [x] GitHub Actions: lint + build + UC-09 (`.github/workflows/ci.yml`)
-- [ ] Deploy staging to Vercel (preview + staging branch)
+- [x] Vercel deploy ready (`web/vercel.json`, `scripts/deploy-vercel.sh`, runbook)
+- [x] GitHub Actions deploy workflow (`.github/workflows/deploy-vercel.yml` — needs `VERCEL_TOKEN`)
 
 ### Phase 0 exit criteria
-- [x] New user signs up → creates project (verified via API)
-- [ ] Upload images → refresh → data persists in Supabase Storage (verify in browser)
-- [x] UC-09 Playwright test passes locally (demo mode)
-- [ ] UC-09 passes in GitHub Actions CI
-- [ ] Staging URL live on Vercel
+- [x] New user signs up → creates project (verified via API + E2E)
+- [x] Upload images → refresh → data persists (Supabase E2E passes)
+- [x] UC-09 Playwright tests pass locally (demo + Supabase modes)
+- [x] UC-09 passes in GitHub Actions CI
+- [x] Vercel deploy documented — run `./scripts/deploy-vercel.sh` after `npx vercel login`
 
 ---
 
@@ -323,7 +324,9 @@ Record completed items here (newest first).
 
 | Date | Item | PR / commit |
 |------|------|-------------|
-| 2026-06-30 | Supabase project provisioned, migrations applied, auth configured | — |
+| 2026-06-30 | Phase 0 complete: Vercel runbook, E2E auth helper, CI updated | — |
+| 2026-06-30 | React-PDF export engine replaces jsPDF | `3871529` |
+| 2026-06-30 | Supabase project provisioned, migrations applied, auth configured | `f905962` |
 | 2026-06-29 | Phase 0 foundation: data layer, auth, migrations 002/003, CI, UC-09 | `8d0bc78` |
 | 2026-06-29 | MVP scaffold (web, extension, schema, docs) | `98f5338` |
 | 2026-06-29 | Git repo created + pushed to GitHub | `itsbrown/inspogrid-ai` |

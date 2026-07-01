@@ -4,6 +4,23 @@ Session-level log of durable learnings and doc changes. Not a product release ch
 
 ---
 
+## 2026-06-30 (Phase 0 complete)
+
+**Learned:**
+- E2E tests need `ensureAuthenticated` helper when Supabase env is set locally
+- CI runs without `.env.local` so demo mode works; Supabase persistence verified locally
+- Vercel deploy requires one-time `vercel login` or GitHub integration in dashboard
+
+**Updated:**
+- `tests/helpers/auth.ts`, E2E specs, CI workflow
+- `scripts/deploy-vercel.sh`, `web/vercel.json`, deploy workflow + runbook
+- `docs/APP_KNOWLEDGE/domains/tech-scope.md` — Phase 0 marked done
+
+**Gaps:**
+- Production Vercel URL not yet live (user runs deploy script or connects GitHub)
+
+---
+
 ## 2026-06-30 (Supabase provisioned)
 
 **Learned:**

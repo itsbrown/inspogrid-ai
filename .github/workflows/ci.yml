@@ -39,6 +39,6 @@ jobs:
         working-directory: .
         run: npx playwright install --with-deps chromium
 
-      - name: E2E UC-09
+      - name: E2E UC-09 (demo mode — no Supabase env in CI)
         working-directory: .
-        run: npx playwright test tests/uc-09-manual-upload.spec.ts
+        run: npx playwright test tests/uc-09-manual-upload.spec.ts tests/uc-09-supabase-flow.spec.ts

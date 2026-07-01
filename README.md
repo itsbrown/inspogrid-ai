@@ -34,6 +34,15 @@ npm run test:e2e:uc09
 
 See [supabase/README.md](supabase/README.md) — run migrations 001–003, then configure `web/.env.local`.
 
+### Deploy to Vercel
+
+```bash
+npx vercel login          # one-time
+./scripts/deploy-vercel.sh
+```
+
+Or connect [github.com/itsbrown/inspogrid-ai](https://github.com/itsbrown/inspogrid-ai) in the [Vercel dashboard](https://vercel.com/new) with root directory `web`. See [docs/APP_KNOWLEDGE/runbooks/vercel-deploy.md](docs/APP_KNOWLEDGE/runbooks/vercel-deploy.md).
+
 Open http://localhost:3000 → **Start a mood board** → upload images → export PDF.
 
 ## Production setup

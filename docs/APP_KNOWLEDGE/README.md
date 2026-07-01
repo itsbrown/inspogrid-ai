@@ -12,6 +12,7 @@ InspoGrid AI turns scattered saved inspiration (Pinterest, Etsy, manual uploads)
 | Architecture & stack | [architecture.md](./architecture.md) |
 | MVP scope & phases | [domains/mvp.md](./domains/mvp.md) |
 | Session changelog | [CHANGELOG.md](./CHANGELOG.md) |
+| Vercel deploy | [runbooks/vercel-deploy.md](./runbooks/vercel-deploy.md) |
 
 ## Repo layout
 
