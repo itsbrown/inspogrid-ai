@@ -4,6 +4,24 @@ Session-level log of durable learnings and doc changes. Not a product release ch
 
 ---
 
+## 2026-07-02
+
+**Learned:**
+- Vercel CLI `login` times out (~10 min) if browser device auth isn't completed
+- GitHub Actions cannot use `secrets` in job-level `if` — broke `deploy-vercel.yml` on push
+- Dashboard deploy fails if root directory stays `./` instead of `web`
+- Grok CLI installs via `curl -fsSL https://x.ai/cli/install.sh | bash` → `~/.grok/bin/grok`
+
+**Updated:**
+- `.github/workflows/deploy-vercel.yml` (workflow_dispatch only)
+- `docs/APP_KNOWLEDGE/runbooks/vercel-deploy.md` (troubleshooting table)
+
+**Gaps:**
+- Production Vercel URL still not confirmed live
+- Supabase prod redirect URLs need Vercel domain once deploy succeeds
+
+---
+
 ## 2026-06-30 (Phase 0 complete)
 
 **Learned:**

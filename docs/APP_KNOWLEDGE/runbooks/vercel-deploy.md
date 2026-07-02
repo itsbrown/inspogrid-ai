@@ -1,45 +1,51 @@
 # Vercel deployment
 
-## Project settings
+## Recommended: Dashboard import (GitHub)
 
-| Setting | Value |
-|---------|-------|
-| Root directory | `web` |
-| Framework | Next.js |
-| Node | 20.x |
+1. Go to [vercel.com/new](https://vercel.com/new) → Import `itsbrown/inspogrid-ai`
+2. **Root Directory:** `web` ← required (not `./`)
+3. **Framework:** Next.js
+4. Add environment variables (Production and Preview):
 
-## Required environment variables
+| Name | Value |
+|------|-------|
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://numdijyrzdqjizpvlnbs.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | From Supabase → Settings → API |
+| `NEXT_PUBLIC_APP_URL` | Your Vercel URL (after first deploy) |
+| `EXTENSION_API_KEY` | Any secret string |
 
-Set in Vercel → Project → Settings → Environment Variables:
+5. Click **Deploy**
 
-```
-NEXT_PUBLIC_SUPABASE_URL=https://numdijyrzdqjizpvlnbs.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<from Supabase dashboard → API>
-NEXT_PUBLIC_APP_URL=https://<your-vercel-domain>.vercel.app
-EXTENSION_API_KEY=<generate a secret>
-```
+### Common failures
 
-## Supabase auth redirects
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| Build can't find Next.js | Root directory is `./` | Set root to `web` |
+| Auth redirect fails on prod | Supabase URLs not updated | Add Vercel URL + `/auth/callback` in Supabase auth settings |
+| `NEXT_PUBLIC_APP_URL` empty | Set after first deploy | Add URL in Vercel env vars, redeploy |
 
-Add your Vercel URL to Supabase → Authentication → URL Configuration:
-
-- Site URL: `https://<your-vercel-domain>.vercel.app`
-- Redirect URLs: `https://<your-vercel-domain>.vercel.app/auth/callback`
-
-Or push via `supabase/config.toml` additional_redirect_urls and `supabase config push`.
-
-## Deploy from CLI
+## CLI deploy (Option A)
 
 ```bash
-cd web
-npx vercel --prod
+npx vercel login    # opens browser — must complete within ~10 min
+./scripts/deploy-vercel.sh
 ```
 
-## Deploy from GitHub
+CLI login times out if the browser step isn't completed. Dashboard import avoids this.
 
-Connect https://github.com/itsbrown/inspogrid-ai in Vercel dashboard:
+## Supabase auth redirects (after deploy)
 
-1. Import repository
-2. Set root directory to `web`
-3. Add env vars above
-4. Deploy
+Supabase → Authentication → URL Configuration:
+
+- **Site URL:** `https://<your-vercel-domain>.vercel.app`
+- **Redirect URLs:** `https://<your-vercel-domain>.vercel.app/auth/callback`
+
+Or add to `supabase/config.toml` `additional_redirect_urls` and run `supabase config push`.
+
+## GitHub Actions deploy (optional)
+
+Workflow: `.github/workflows/deploy-vercel.yml` (manual trigger only)
+
+Required repo secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, plus the four env vars above.
+
+**Note:** GitHub does not allow `secrets` in job-level `if` conditions — workflow uses `workflow_dispatch` only.
