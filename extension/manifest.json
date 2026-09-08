@@ -1,13 +1,14 @@
 {
   "manifest_version": 3,
   "name": "InspoGrid AI",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Send saved Pinterest boards to InspoGrid AI for print-ready contact-sheet mood boards.",
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "cookies", "scripting"],
   "host_permissions": [
     "https://www.pinterest.com/*",
     "https://pinterest.com/*",
-    "http://localhost:3000/*"
+    "http://localhost:3000/*",
+    "https://*.supabase.co/*"
   ],
   "action": {
     "default_popup": "popup.html",

@@ -22,7 +22,7 @@
 |-------|--------|--------|---------------|
 | **Scaffold** | Pre-week 1 | `[x]` Done | UI prototype runs in demo mode |
 | **Phase 0** | Weeks 1–2 | `[x]` Done | Auth + Supabase persistence E2E |
-| **Phase 1** | Weeks 3–6 | `[ ]` Not started | UC-01 + UC-09 beta-ready |
+| **Phase 1** | Weeks 3–6 | `[~]` In progress | UC-01 + UC-09 beta-ready |
 | **Phase 2** | Weeks 7–10 | `[ ]` Not started | Stripe + 300 DPI PDF + AI filter |
 | **Phase 3** | Months 4–6 | `[-]` Deferred | V2 growth features |
 
@@ -136,16 +136,16 @@
 - [ ] Account deletion flow (GDPR baseline)
 
 ### 1.2 Pinterest — extension import (Approach B)
-- [ ] Extension: authenticate user (popup OAuth to web app)
-- [ ] Replace shared API key with per-user device token
-- [ ] Extension popup: select target project before import
-- [ ] Content script: handle Pinterest SPA navigation (re-inject on route change)
+- [x] Extension: authenticate user (popup OAuth to web app)
+- [x] Replace shared API key with per-user device token
+- [x] Extension popup: select target project before import
+- [x] Content script: handle Pinterest SPA navigation (re-inject on route change)
 - [ ] Content script: scroll/paginate to capture > visible pins
-- [ ] Extract highest-resolution image URLs available in DOM
-- [ ] API: persist pins to `image_assets` for selected project
-- [ ] API: enforce free-tier import limits via `usage_counters`
-- [ ] UI: show import progress + count (`Imported N pins`)
-- [ ] Error handling: rate limit, auth expired, empty board
+- [x] Extract highest-resolution image URLs available in DOM
+- [x] API: persist pins to `image_assets` for selected project
+- [x] API: enforce free-tier import limits via `usage_counters`
+- [x] UI: show import progress + count (`Imported N pins`)
+- [x] Error handling: rate limit, auth expired, empty board
 
 ### 1.3 Pinterest — official API (Approach A, parallel track)
 - [ ] Register Pinterest developer app (Trial access)
@@ -324,6 +324,7 @@ Record completed items here (newest first).
 
 | Date | Item | PR / commit |
 |------|------|-------------|
+| 2026-09-08 | Phase 1.2 Pinterest extension import (Approach B) | `phase-1-2-pinterest-extension` |
 | 2026-06-30 | Phase 0 complete: Vercel runbook, E2E auth helper, CI updated | — |
 | 2026-06-30 | React-PDF export engine replaces jsPDF | `3871529` |
 | 2026-06-30 | Supabase project provisioned, migrations applied, auth configured | `f905962` |

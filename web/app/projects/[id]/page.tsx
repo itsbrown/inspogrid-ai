@@ -114,7 +114,7 @@ export default function ProjectEditorPage() {
             <section className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
               <h2 className="mb-3 font-semibold text-stone-900">Manual upload</h2>
               <p className="mb-4 text-sm text-stone-500">
-                UC-09 — drag images from your desktop. Pinterest extension import coming in Phase 1.
+                Drag images or use the InspoGrid Chrome extension on Pinterest boards.
               </p>
               <ImageUploadZone onFilesSelected={handleUpload} disabled={uploading} />
               {uploading && <p className="mt-3 text-sm text-stone-500">Uploading…</p>}

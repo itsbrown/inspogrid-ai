@@ -4,32 +4,35 @@
     <meta charset="utf-8" />
     <style>
       body {
-        width: 280px;
+        width: 320px;
         font-family: system-ui, sans-serif;
-        padding: 16px;
+        padding: 14px;
         margin: 0;
+        color: #1c1917;
       }
       h1 {
-        font-size: 16px;
-        margin: 0 0 8px;
+        font-size: 15px;
+        margin: 0 0 6px;
       }
-      p {
-        font-size: 13px;
+      .sub {
+        font-size: 12px;
         color: #57534e;
-        margin: 0 0 12px;
+        margin: 0 0 10px;
       }
       label {
         display: block;
-        font-size: 12px;
-        margin-bottom: 4px;
+        font-size: 11px;
+        margin: 8px 0 3px;
+        color: #57534e;
       }
-      input {
+      input, select {
         width: 100%;
         padding: 6px 8px;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
         border: 1px solid #d6d3d1;
         border-radius: 6px;
         box-sizing: border-box;
+        font-size: 13px;
       }
       button {
         width: 100%;
@@ -39,17 +42,47 @@
         border: none;
         border-radius: 6px;
         cursor: pointer;
+        font-weight: 600;
+        margin-top: 4px;
       }
+      button.secondary {
+        background: #f5f5f4;
+        color: #1c1917;
+        border: 1px solid #d6d3d1;
+      }
+      .status {
+        font-size: 12px;
+        margin-top: 8px;
+        min-height: 16px;
+      }
+      .status.ok { color: #166534; }
+      .status.err { color: #9f1239; }
+      .row { display: flex; gap: 6px; }
+      .row button { flex: 1; }
+      select:disabled { background: #f5f5f4; }
     </style>
   </head>
   <body>
     <h1>InspoGrid AI</h1>
-    <p>Open a Pinterest board and click "Send to InspoGrid" on the page.</p>
+    <p class="sub">Open a Pinterest board. Select a project, then send pins.</p>
+
     <label>App URL</label>
     <input id="apiUrl" type="url" placeholder="http://localhost:3000" />
-    <label>Extension API Key</label>
-    <input id="extensionKey" type="text" placeholder="dev-extension-key..." />
-    <button id="save">Save settings</button>
+
+    <label>Target project</label>
+    <select id="projectSelect" disabled>
+      <option value="">— Log in first —</option>
+    </select>
+
+    <div class="row">
+      <button id="refreshProjects" class="secondary">Refresh projects</button>
+      <button id="loginHint" class="secondary">Open app to log in</button>
+    </div>
+
+    <button id="send">Send pins to selected project</button>
+
+    <div id="status" class="status"></div>
+
     <script src="popup.js"></script>
   </body>
 </html>
