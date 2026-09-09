@@ -11,11 +11,17 @@ import { Grid3x3, LogOut } from "lucide-react";
 export function Navbar() {
   const router = useRouter();
   const [email, setEmail] = useState<string | null>(null);
+  const [sessionChecked, setSessionChecked] = useState(false);
   const supabaseMode = isSupabaseConfigured();
 
   useEffect(() => {
-    if (!supabaseMode) return;
-    getSessionUser().then((user) => setEmail(user?.email ?? null));
+    if (!supabaseMode) {
+      setSessionChecked(true);
+      return;
+    }
+    getSessionUser()
+      .then((user) => setEmail(user?.email ?? null))
+      .finally(() => setSessionChecked(true));
   }, [supabaseMode]);
 
   async function handleSignOut() {
@@ -25,6 +31,8 @@ export function Navbar() {
     router.refresh();
   }
 
+  const showDashboard = !supabaseMode || Boolean(email);
+
   return (
     <header className="border-b border-stone-200 bg-white/80 backdrop-blur sticky top-0 z-50">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
@@ -33,9 +41,11 @@ export function Navbar() {
           InspoGrid AI
         </Link>
         <nav className="flex items-center gap-3">
-          <Link href="/dashboard" className="text-sm text-stone-600 hover:text-stone-900">
-            Dashboard
-          </Link>
+          {showDashboard && (
+            <Link href="/dashboard" className="text-sm text-stone-600 hover:text-stone-900">
+              Dashboard
+            </Link>
+          )}
           {email ? (
             <>
               <span className="hidden text-sm text-stone-500 sm:inline">{email}</span>
@@ -44,7 +54,7 @@ export function Navbar() {
                 Sign out
               </Button>
             </>
-          ) : (
+          ) : sessionChecked ? (
             <>
               <Link href="/login">
                 <Button variant="ghost" size="sm">
@@ -55,7 +65,7 @@ export function Navbar() {
                 <Button size="sm">Get started</Button>
               </Link>
             </>
-          )}
+          ) : null}
         </nav>
       </div>
     </header>
